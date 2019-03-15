@@ -1,9 +1,3 @@
-/**
-xxHash implementation in pure Javascript
-
-Copyright (C) 2013, Pierre Curto
-MIT license
-*/
 var UINT32 = require('cuint').UINT32
 
 /*
