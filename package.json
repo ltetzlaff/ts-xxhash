@@ -25,6 +25,7 @@
   ],
   "license": "All rights reserved.",
   "devDependencies": {
+    "@types/node": "^11.11.3",
     "tslint-lt": "^1.8.0",
     "typescript": "^3.3.3333"
   },
