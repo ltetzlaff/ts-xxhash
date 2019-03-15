@@ -29,5 +29,7 @@
     "tslint-lt": "^1.8.0",
     "typescript": "^3.3.3333"
   },
-  "dependencies": {}
+  "dependencies": {
+    "cuint": "^0.2.2"
+  }
 }
