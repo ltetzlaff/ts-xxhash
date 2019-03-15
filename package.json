@@ -1,32 +1,32 @@
 {
-  "name": "xxhashjs",
-  "version": "0.2.2",
-  "description": "xxHash in Javascript",
-  "main": "./lib/index.js",
+  "name": "ts-xxhash",
+  "version": "0.0.0",
+  "description": "Typescript port of xxhash for 32 and 64 bit",
   "scripts": {
-    "test": "mocha",
-    "prepublish": "webpack && uglifyjs -m -c -o build/xxhash.min.js build/xxhash.js"
+    "build": "tsc --watch || true",
+    "buildOnce": "tsc",
+    "lint": "tslint --format stylish --project .",
+    "prettier": "prettier --config node_modules/tslint-lt/.prettierrc.yml --write \"{,!node_modules/}**/*.{ts,tsx,css,scss,html,js,jsx,yml,json}\"",
+    "test": "npm run buildOnce && npm run lint && npm run prettier",
+    "prepublish": "npm run buildOnce"
   },
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index",
+  "types": "dist/index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pierrec/js-xxhash"
+    "url": "https://github.com/ltetzlaff/ts-xxhash.git"
   },
-  "keywords": [
-    "xxhash",
-    "xxh"
+  "contributors": [
+    "Pierre Curto",
+    "ltetzlaff"
   ],
-  "author": "Pierre Curto",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pierrec/js-xxhash/issues"
-  },
-  "homepage": "https://github.com/pierrec/js-xxhash",
-  "dependencies": {
-    "cuint": "^0.2.2"
-  },
+  "license": "All rights reserved.",
   "devDependencies": {
-    "benchmark": "*",
-    "uglifyjs": "^2.4.11",
-    "webpack": "^3.10.0"
-  }
+    "tslint-lt": "^1.8.0",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {}
 }
