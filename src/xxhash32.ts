@@ -6,6 +6,21 @@ export default class XXHash32 extends XXHash<UInt32> {
     super(UInt32, UINT32, seed)
   }
 
+  public static hash(seed: UInt32 | string | number): XXHash32
+  public static hash(
+    seed: UInt32 | string | number,
+    input: string | ArrayBuffer | Buffer
+  ): UInt32
+  public static hash(
+    seed: UInt32 | string | number,
+    input?: string | ArrayBuffer | Buffer
+  ) {
+    const instance = new this(seed)
+    if (input === undefined) return instance
+
+    return instance.update(input).digest()
+  }
+
   protected size = 16
 
   protected primes = {

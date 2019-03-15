@@ -22,6 +22,8 @@ declare module "cuint" {
 
     public _low: number
     public _high: number
+
+    public toString(base?: number): string
   }
 
   export class UInt64 extends UInt {}
