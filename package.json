@@ -1,6 +1,6 @@
 {
   "name": "ts-xxhash",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Typescript port of xxhash for 32 and 64 bit",
   "scripts": {
     "build": "tsc --watch || true",
