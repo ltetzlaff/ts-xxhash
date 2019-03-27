@@ -11,7 +11,8 @@
     "prepublish": "npm run buildOnce"
   },
   "files": [
-    "dist"
+    "dist",
+    "cuint.d.ts"
   ],
   "main": "dist/index",
   "types": "dist/index",
