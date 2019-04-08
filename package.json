@@ -29,7 +29,7 @@
     "@types/cuint": "^0.2.0",
     "@types/mocha": "^5.2.6",
     "@types/node": "^11.11.3",
-    "mocha": "^6.0.2",
+    "mocha": "^6.1.1",
     "tslint-lt": "^1.8.0",
     "typescript": "^3.3.3333"
   },
