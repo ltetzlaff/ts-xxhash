@@ -1,18 +1,18 @@
-import { UINT64, UInt64 } from "cuint"
+import { UINT64, Uint, Uint64Constructor } from "cuint"
 import XXHash from "./xxhash"
 
-export default class XXHash64 extends XXHash<UInt64> {
-  public constructor(seed: UInt64 | string | number) {
-    super(UInt64, UINT64, seed)
+export default class XXHash64 extends XXHash<Uint64Constructor<Uint>> {
+  public constructor(seed: Uint | string | number) {
+    super(UINT64, seed)
   }
 
-  public static hash(seed: UInt64 | string | number): XXHash64
+  public static hash(seed: Uint | string | number): XXHash64
   public static hash(
-    seed: UInt64 | string | number,
+    seed: Uint | string | number,
     input: string | ArrayBuffer | Buffer
-  ): UInt64
+  ): Uint
   public static hash(
-    seed: UInt64 | string | number,
+    seed: Uint | string | number,
     input?: string | ArrayBuffer | Buffer
   ) {
     const instance = new this(seed)
@@ -24,14 +24,14 @@ export default class XXHash64 extends XXHash<UInt64> {
   protected size = 32
 
   protected primes = {
-    P1: this.uintFactory("11400714785074694791"),
-    P2: this.uintFactory("14029467366897019727"),
-    P3: this.uintFactory("1609587929392839161"),
-    P4: this.uintFactory("9650029242287828579"),
-    P5: this.uintFactory("2870177450012600261")
+    P1: this.uintConstructor("11400714785074694791"),
+    P2: this.uintConstructor("14029467366897019727"),
+    P3: this.uintConstructor("1609587929392839161"),
+    P4: this.uintConstructor("9650029242287828579"),
+    P5: this.uintConstructor("2870177450012600261")
   }
 
-  private shiftDigest(h: UInt64, v: UInt64) {
+  private shiftDigest(h: Uint, v: Uint) {
     h.xor(
       v
         .multiply(this.primes.P2)
@@ -41,9 +41,9 @@ export default class XXHash64 extends XXHash<UInt64> {
     h.multiply(this.primes.P1).add(this.primes.P4)
   }
 
-  protected shiftUpdate(v: UInt64, m: Uint8Array | Buffer, p: number) {
+  protected shiftUpdate(v: Uint, m: Uint8Array | Buffer, p: number) {
     v.add(
-      UINT64(
+      this.uintConstructor(
         (m[p + 1] << 8) | m[p],
         (m[p + 3] << 8) | m[p + 2],
         (m[p + 5] << 8) | m[p + 4],
@@ -54,7 +54,7 @@ export default class XXHash64 extends XXHash<UInt64> {
       .multiply(this.primes.P1)
   }
 
-  public digest(): UInt64 {
+  public digest(): Uint {
     const m = this.memory!
     const { P1, P2, P3, P4, P5 } = this.primes
     const h =
@@ -73,7 +73,7 @@ export default class XXHash64 extends XXHash<UInt64> {
       }
     }
 
-    const u = new UInt64()
+    const u = this.uintConstructor(NaN)
     h.add(u.fromNumber(this.totalLen))
 
     let i = 0

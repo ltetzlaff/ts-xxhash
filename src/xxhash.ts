@@ -1,7 +1,18 @@
-import { UInt, UIntFactory } from "cuint"
+import { Uint, UintConstructor, UINT64 } from "cuint"
 import toBuffer from "./to-buffer"
 
-export default abstract class XXHash<T extends UInt> extends UInt {
+interface IClonable<T> {
+  clone(): T
+}
+
+function isClonable<T>(obj: {}): obj is IClonable<T> {
+  return obj.hasOwnProperty("clone")
+}
+
+export default abstract class XXHash<
+  C extends UintConstructor<T>,
+  T extends Uint = Uint
+> extends UINT64 {
   protected abstract size: number
 
   protected abstract primes: {
@@ -30,17 +41,17 @@ export default abstract class XXHash<T extends UInt> extends UInt {
    * @param seed unsigned 32-bit integer
    */
   public constructor(
-    protected readonly uintClass: typeof UInt,
-    protected readonly uintFactory: UIntFactory<T>,
+    protected readonly uintConstructor: C,
     seed: T | string | number
   ) {
-    super()
+    super(NaN)
     this.reseed(seed)
   }
 
-  protected reseed(seed: T | string | number) {
-    this.seed =
-      seed instanceof this.uintClass ? seed.clone() : this.uintFactory(seed)
+  protected reseed(seed: IClonable<T> | string | number) {
+    this.seed = isClonable(seed)
+      ? seed.clone()
+      : this.uintConstructor(seed as string)
     this.v1 = this.seed
       .clone()
       .add(this.primes.P1)

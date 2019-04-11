@@ -1,18 +1,18 @@
-import { UINT32, UInt32 } from "cuint"
+import { UINT32, Uint, UintConstructor } from "cuint"
 import XXHash from "./xxhash"
 
-export default class XXHash32 extends XXHash<UInt32> {
-  public constructor(seed: UInt32 | string | number) {
-    super(UInt32, UINT32, seed)
+export default class XXHash32 extends XXHash<UintConstructor<Uint>> {
+  public constructor(seed: Uint | string | number) {
+    super(UINT32, seed)
   }
 
-  public static hash(seed: UInt32 | string | number): XXHash32
+  public static hash(seed: Uint | string | number): XXHash32
   public static hash(
-    seed: UInt32 | string | number,
+    seed: Uint | string | number,
     input: string | ArrayBuffer | Buffer
-  ): UInt32
+  ): Uint
   public static hash(
-    seed: UInt32 | string | number,
+    seed: Uint | string | number,
     input?: string | ArrayBuffer | Buffer
   ) {
     const instance = new this(seed)
@@ -24,18 +24,18 @@ export default class XXHash32 extends XXHash<UInt32> {
   protected size = 16
 
   protected primes = {
-    P1: this.uintFactory("2654435761"),
-    P2: this.uintFactory("2246822519"),
-    P3: this.uintFactory("3266489917"),
-    P4: this.uintFactory("668265263"),
-    P5: this.uintFactory("374761393")
+    P1: this.uintConstructor("2654435761"),
+    P2: this.uintConstructor("2246822519"),
+    P3: this.uintConstructor("3266489917"),
+    P4: this.uintConstructor("668265263"),
+    P5: this.uintConstructor("374761393")
   }
 
   /**
    * Merged this sequence of method calls as it speeds up
     the calculations by a factor of 2
   */
-  private updateUInt32(uint: UInt32, low: number, high: number) {
+  private updateUint(uint: Uint, low: number, high: number) {
     const { P1, P2 } = this.primes
     let b00 = P2._low
     let b16 = P2._high
@@ -72,11 +72,11 @@ export default class XXHash32 extends XXHash<UInt32> {
     uint._high = c16 & 0xffff
   }
 
-  protected shiftUpdate(v: UInt32, m: Uint8Array | Buffer, p: number) {
-    this.updateUInt32(v, (m[p + 1] << 8) | m[p], (m[p + 3] << 8) | m[p + 2])
+  protected shiftUpdate(v: Uint, m: Uint8Array | Buffer, p: number) {
+    this.updateUint(v, (m[p + 1] << 8) | m[p], (m[p + 3] << 8) | m[p + 2])
   }
 
-  public digest(): UInt32 {
+  public digest(): Uint {
     const m = this.memory!
     const { P1, P2, P3, P4, P5 } = this.primes
     const h =
@@ -97,7 +97,7 @@ export default class XXHash32 extends XXHash<UInt32> {
             )
         : this.seed.clone().add(P5)
 
-    const u = new this.uintClass()
+    const u = this.uintConstructor(NaN)
     h.add(u.fromNumber(this.totalLen))
 
     let i = 0
