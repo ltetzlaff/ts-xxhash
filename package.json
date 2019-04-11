@@ -26,7 +26,7 @@
   ],
   "license": "All rights reserved.",
   "devDependencies": {
-    "@types/cuint": "^0.2.0",
+    "@types/cuint": "^0.2.1",
     "@types/mocha": "^5.2.6",
     "@types/node": "^11.11.3",
     "mocha": "^6.1.1",
