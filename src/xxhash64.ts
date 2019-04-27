@@ -2,8 +2,19 @@ import { UINT64, Uint, Uint64Constructor } from "cuint"
 import XXHash from "./xxhash"
 
 export default class XXHash64 extends XXHash<Uint64Constructor<Uint>> {
+  protected size = 32
+
+  protected primes = {
+    P1: this.uintConstructor("11400714785074694791"),
+    P2: this.uintConstructor("14029467366897019727"),
+    P3: this.uintConstructor("1609587929392839161"),
+    P4: this.uintConstructor("9650029242287828579"),
+    P5: this.uintConstructor("2870177450012600261")
+  }
+
   public constructor(seed: Uint | string | number) {
-    super(UINT64, seed)
+    super(UINT64)
+    this.reseed(seed)
   }
 
   public static hash(seed: Uint | string | number): XXHash64
@@ -19,16 +30,6 @@ export default class XXHash64 extends XXHash<Uint64Constructor<Uint>> {
     if (input === undefined) return instance
 
     return instance.update(input).digest()
-  }
-
-  protected size = 32
-
-  protected primes = {
-    P1: this.uintConstructor("11400714785074694791"),
-    P2: this.uintConstructor("14029467366897019727"),
-    P3: this.uintConstructor("1609587929392839161"),
-    P4: this.uintConstructor("9650029242287828579"),
-    P5: this.uintConstructor("2870177450012600261")
   }
 
   private shiftDigest(h: Uint, v: Uint) {

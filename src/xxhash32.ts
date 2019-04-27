@@ -2,8 +2,19 @@ import { UINT32, Uint, UintConstructor } from "cuint"
 import XXHash from "./xxhash"
 
 export default class XXHash32 extends XXHash<UintConstructor<Uint>> {
+  protected size = 16
+
+  protected primes = {
+    P1: this.uintConstructor("2654435761"),
+    P2: this.uintConstructor("2246822519"),
+    P3: this.uintConstructor("3266489917"),
+    P4: this.uintConstructor("668265263"),
+    P5: this.uintConstructor("374761393")
+  }
+
   public constructor(seed: Uint | string | number) {
-    super(UINT32, seed)
+    super(UINT32)
+    this.reseed(seed)
   }
 
   public static hash(seed: Uint | string | number): XXHash32
@@ -19,16 +30,6 @@ export default class XXHash32 extends XXHash<UintConstructor<Uint>> {
     if (input === undefined) return instance
 
     return instance.update(input).digest()
-  }
-
-  protected size = 16
-
-  protected primes = {
-    P1: this.uintConstructor("2654435761"),
-    P2: this.uintConstructor("2246822519"),
-    P3: this.uintConstructor("3266489917"),
-    P4: this.uintConstructor("668265263"),
-    P5: this.uintConstructor("374761393")
   }
 
   /**

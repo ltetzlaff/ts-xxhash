@@ -40,12 +40,8 @@ export default abstract class XXHash<
   /**
    * @param seed unsigned 32-bit integer
    */
-  public constructor(
-    protected readonly uintConstructor: C,
-    seed: T | string | number
-  ) {
+  protected constructor(protected readonly uintConstructor: C) {
     super(NaN)
-    this.reseed(seed)
   }
 
   protected reseed(seed: IClonable<T> | string | number) {
