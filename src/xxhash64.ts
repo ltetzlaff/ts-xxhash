@@ -55,18 +55,8 @@ export default class XXHash64 extends XXHash<Uint64Constructor<Uint>> {
       .multiply(this.primes.P1)
   }
 
-  public digest(): Uint {
-    const m = this.memory!
+  protected digestCore(m: Uint8Array | Buffer, h: Uint): Uint {
     const { P1, P2, P3, P4, P5 } = this.primes
-    const h =
-      this.totalLen >= this.size
-        ? this.v1
-            .clone()
-            .rotl(1)
-            .add(this.v2.clone().rotl(7))
-            .add(this.v3.clone().rotl(12))
-            .add(this.v4.clone().rotl(18))
-        : this.seed.clone().add(P5)
 
     if (this.totalLen >= this.size) {
       for (const v of this.vn) {
@@ -115,9 +105,6 @@ export default class XXHash64 extends XXHash<Uint64Constructor<Uint>> {
     h.xor(h.clone().shiftRight(33)).multiply(P2)
     h.xor(h.clone().shiftRight(29)).multiply(P3)
     h.xor(h.clone().shiftRight(32))
-
-    // Reset the state
-    this.reseed(this.seed)
 
     return h
   }

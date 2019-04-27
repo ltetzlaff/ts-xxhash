@@ -77,26 +77,8 @@ export default class XXHash32 extends XXHash<UintConstructor<Uint>> {
     this.updateUint(v, (m[p + 1] << 8) | m[p], (m[p + 3] << 8) | m[p + 2])
   }
 
-  public digest(): Uint {
-    const m = this.memory!
+  protected digestCore(m: Uint8Array | Buffer, h: Uint): Uint {
     const { P1, P2, P3, P4, P5 } = this.primes
-    const h =
-      this.totalLen >= this.size
-        ? this.v1
-            .clone()
-            .rotl(1)
-            .add(
-              this.v2
-                .clone()
-                .rotl(7)
-                .add(
-                  this.v3
-                    .clone()
-                    .rotl(12)
-                    .add(this.v4.clone().rotl(18))
-                )
-            )
-        : this.seed.clone().add(P5)
 
     const u = this.uintConstructor(NaN)
     h.add(u.fromNumber(this.totalLen))
@@ -121,9 +103,6 @@ export default class XXHash32 extends XXHash<UintConstructor<Uint>> {
     h.xor(h.clone().shiftRight(15)).multiply(P2)
     h.xor(h.clone().shiftRight(13)).multiply(P3)
     h.xor(h.clone().shiftRight(16))
-
-    // Reset the state
-    this.reseed(this.seed)
 
     return h
   }

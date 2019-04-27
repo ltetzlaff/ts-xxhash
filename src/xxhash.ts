@@ -66,6 +66,34 @@ export default abstract class XXHash<
 
   protected abstract shiftUpdate(v: T, m: Uint8Array | Buffer, p: number): void
 
+  protected abstract digestCore(m: Uint8Array | Buffer, h: T): T
+
+  /**
+   * Finalize the hash computation. The hash instance is ready for reuse for the given seed
+   */
+  public digest(): T {
+    const m = this.memory
+    if (m === undefined)
+      throw new ReferenceError(
+        "Hash Memory not set, .update() has to be called before digest()"
+      )
+    const { P5 } = this.primes
+    const h =
+      this.totalLen >= this.size
+        ? this.v1
+            .rotl(1)
+            .add(this.v2.clone().rotl(7))
+            .add(this.v3.clone().rotl(12))
+            .add(this.v4.clone().rotl(18))
+        : this.seed.clone().add(P5)
+    const hash = this.digestCore(m, h)
+
+    // Reset the state
+    this.reseed(this.seed)
+
+    return hash
+  }
+
   /**
    * Add data to be computed for the hash
    */
@@ -144,9 +172,4 @@ export default abstract class XXHash<
     this.memory = memory
     return this
   }
-
-  /**
-   * Finalize the hash computation. The hash instance is ready for reuse for the given seed
-   */
-  public abstract digest(): T
 }
