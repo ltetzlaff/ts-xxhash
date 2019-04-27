@@ -6,8 +6,8 @@
     "build": "tsc --watch || true",
     "buildOnce": "tsc",
     "lint": "tslint --format stylish --project .",
-    "prettier": "prettier --config node_modules/tslint-lt/.prettierrc.yml --write \"{,!node_modules/}**/*.{ts,tsx,css,scss,html,js,jsx,yml,json}\"",
-    "test": "npm run buildOnce && npm run lint && npm run prettier",
+    "prettier": "prettier --config node_modules/tslint-lt/.prettierrc.yml --write \"**/*.{ts,tsx,css,scss,html,js,jsx,yml,json,md}\" \"!{dist}/**\"",
+    "test": "npm run buildOnce && npm run lint && npm run prettier && ts-mocha test/*.ts",
     "prepublish": "npm run buildOnce"
   },
   "files": [
