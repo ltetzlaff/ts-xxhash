@@ -78,7 +78,7 @@ export default class XXHash64 extends XXHash<Uint64Constructor<Uint>> {
     h.add(u.fromNumber(this.totalLen))
 
     let i = 0
-    const inc = this.size / 8
+    const inc = this.getIncrement()
     while (i <= this.memsize - inc) {
       u.fromBits(
         (m[i + 1] << 8) | m[i],

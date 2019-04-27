@@ -44,6 +44,10 @@ export default abstract class XXHash<
     super(NaN)
   }
 
+  protected getIncrement() {
+    return this.size / 4
+  }
+
   protected reseed(seed: IClonable<T> | string | number) {
     this.seed = isClonable(seed)
       ? seed.clone()
@@ -94,7 +98,7 @@ export default abstract class XXHash<
 
     let p = 0
     const bEnd = p + len
-    const inc = this.size / 8
+    const inc = this.getIncrement()
 
     if (this.memsize > 0) {
       // some data left from previous update

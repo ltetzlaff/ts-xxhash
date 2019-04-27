@@ -102,7 +102,7 @@ export default class XXHash32 extends XXHash<UintConstructor<Uint>> {
     h.add(u.fromNumber(this.totalLen))
 
     let i = 0
-    const inc = this.size / 8
+    const inc = this.getIncrement()
     while (i <= this.memsize - inc) {
       u.fromBits((m[i + 1] << 8) | m[i], (m[i + 3] << 8) | m[i + 2])
       h.add(u.multiply(P3))
