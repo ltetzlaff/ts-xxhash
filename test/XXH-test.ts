@@ -1,9 +1,26 @@
 import { equal } from "assert"
 import { describe, it } from "mocha"
-import { XXHash32, XXHash64 } from "../src"
+import { XXHash32 } from "../src"
 
 describe("XXH", () => {
   const seed = 0
+
+  describe("using the constructor", () => {
+    const hash = new XXHash32(seed)
+
+    const input = "abcd"
+    const expected = "A3643705" // Computed with xxHash C version
+    it("should return hash in a single step", done => {
+      const h = hash
+        .update(input)
+        .digest()
+        .toString(16)
+        .toUpperCase()
+
+      equal(h, expected)
+      done()
+    })
+  })
 
   describe("with small input multiple of 4", () => {
     const input = "abcd"
