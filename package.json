@@ -6,7 +6,7 @@
     "build": "tsc --watch || true",
     "buildOnce": "tsc",
     "lint": "tslint --format stylish --project .",
-    "prettier": "prettier --config node_modules/tslint-lt/.prettierrc.yml --write \"**/*.{ts,tsx,css,scss,html,js,jsx,yml,json,md}\" \"!{dist}/**\"",
+    "prettier": "prettier --config node_modules/tslint-lt/.prettierrc.yml --write \"**/*.{ts,tsx,css,scss,html,js,jsx,yml,json,md}\" \"!{,dist}/**\"",
     "test": "npm run buildOnce && npm run lint && npm run prettier && ts-mocha test/*.ts",
     "prepublish": "npm run buildOnce"
   },
@@ -28,7 +28,8 @@
   "devDependencies": {
     "@types/mocha": "^5.2.6",
     "@types/node": "^11.11.3",
-    "mocha": "^6.1.1",
+    "mocha": "^6.1.4",
+    "ts-mocha": "^6.0.0",
     "tslint-lt": "^1.8.0",
     "typescript": "^3.3.3333"
   },
