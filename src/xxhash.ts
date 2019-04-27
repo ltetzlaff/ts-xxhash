@@ -93,6 +93,7 @@ export default abstract class XXHash<
       }
 
       this.memsize += len
+      this.memory = memory
       return this
     }
 
